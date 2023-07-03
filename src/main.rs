@@ -26,7 +26,7 @@ fn handle_connection(mut stream: TcpStream) {
     let contents = fs::read_to_string("hello.html").unwrap();
     let length = contents.len();
     let response = format!(
-        "{status_line}\r\n
+        "{status_line}\r\n\
         Content-Length: {length}\r\n\r\n\
         {contents}"
     );
