@@ -38,6 +38,15 @@ impl ThreadPool {
     }
 }
 
+impl Drop for ThreadPool {
+    fn drop(&mut self) {
+        for worker in &mut self.workers {
+            println!("Shutting down worker {}", worker.id);
+            worker.thread.join().unwrap();
+        }
+    }
+}
+
 type Job = Box<dyn FnOnce() + Send + 'static>;
 
 struct Worker {
@@ -50,7 +59,7 @@ impl Worker {
         let thread = thread::spawn(move|| loop {
             let job = receiver.lock().unwrap().recv().unwrap();
 
-            println!("Worker {id} got a job' executing.");
+            println!("Worker {id} got a job; executing.");
 
             job();
         });
