@@ -71,14 +71,12 @@ impl Worker {
                     println!("Worker {id} got a job; executing.");
 
                     job();
-                },
+                }
                 Err(_) => {
-                    println!("Worker {id} shutting down");
+                    println!("Worker {id} disconnected; shutting down");
                     break;
                 }
-
             }
-
         });
 
         Worker {
